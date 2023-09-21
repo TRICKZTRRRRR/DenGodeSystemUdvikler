@@ -17,6 +17,7 @@ namespace DenGodeSystemUdvikler.Controller
 
         public void MainController()
         {
+            view.Title();
             FileReading();
         }
 
@@ -30,6 +31,10 @@ namespace DenGodeSystemUdvikler.Controller
                 {
                     string fileContent = inputFile.ReadToEnd();
                     view.ReadSuccess(fileContent);
+                    if (string.IsNullOrWhiteSpace(fileContent))
+                    {
+                        throw new Exception("Filen er tom eller indeholder ingen data.");
+                    }
                     data.logData.AddRange(fileContent.Split('\n'));
                     int errorCount = AnalyzeLogData(fileContent);
                     view.DataAnalyse(errorCount);

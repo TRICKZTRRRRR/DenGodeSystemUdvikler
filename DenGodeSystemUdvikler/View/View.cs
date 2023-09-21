@@ -65,6 +65,11 @@ namespace DenGodeSystemUdvikler.View
             Console.WriteLine("--------------------------------------------------");
         }
 
+        public void Title()
+        {
+            Console.Title = "Den Gode Systemudvikler";
+        }
+
         #endregion
     }
 }
