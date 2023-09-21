@@ -10,6 +10,8 @@ namespace DenGodeSystemUdvikler
     {
         static void Main(string[] args)
         {
+            Controller.Controller controller = new Controller.Controller();
+            controller.MainController();
         }
     }
 }
