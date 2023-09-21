@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DenGodeSystemUdvikler.Model
 {
-    internal class ReadFile
+    internal class Lists
     {
+        public List<string> logData = new List<string>();
     }
 }

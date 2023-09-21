@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
+using DenGodeSystemUdvikler.Model;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,8 @@ namespace DenGodeSystemUdvikler.Controller
     {
         View.View view = new View.View();
 
+        private Lists data = new Lists();
+
         public void MainController()
         {
             FileReading();
@@ -20,11 +24,17 @@ namespace DenGodeSystemUdvikler.Controller
         {
             try
             {
-                string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "txtFile.txt");
+                string file = @"C:\Users\zbc23jkst\Desktop\TryCatch\txtFile.txt";
 
                 using (StreamReader inputFile = new StreamReader(file))
                 {
-                    view.ReadSuccess(inputFile.ReadToEnd());
+                    string fileContent = inputFile.ReadToEnd();
+                    view.ReadSuccess(fileContent);
+                    data.logData.AddRange(fileContent.Split('\n'));
+                    int errorCount = AnalyzeLogData(fileContent);
+                    view.DataAnalyse(errorCount);
+                    view.Line();
+                    LogData();
                     view.ReadMessage();
                 }
             }
@@ -33,6 +43,32 @@ namespace DenGodeSystemUdvikler.Controller
                 view.ReadError();
                 view.ReadErrorMessage(e.Message);
                 view.ReadMessage();
+            }
+            finally
+            {
+                view.ReadFinally();
+            }
+        }
+
+        public int AnalyzeLogData(string fileContent)
+        {
+            int errorCount = 0;
+            foreach (string line in fileContent.Split('\n'))
+            {
+                if (line.Contains("ERROR"))
+                {
+                    errorCount++;
+                }
+            }
+            return errorCount;
+        }
+
+        private void LogData()
+        {
+            view.ShowLog();
+            foreach (string logEntry in data.logData) 
+            {
+                view.LogList(logEntry);
             }
         }
     }
